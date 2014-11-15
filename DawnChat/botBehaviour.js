@@ -1,53 +1,64 @@
 //Brain:
-var comIndex = [];
+var inputIndex = [];
+var outputIndex = {};
 
 var initBot = function () {
     "use strict";
-    comIndex.push({
+    inputIndex.push({
         "regex": /^Hello/im,
         "action": "greeting"
     });
 
-    comIndex.push({
+    inputIndex.push({
         "regex": /^Hi/im,
         "action": "greeting"
     });
+
+    var greeting = [];
+    greeting.push("Hello there!");
+    greeting.push("Hey!");
+    greeting.push("Ola!");
+    greeting.push("Hiya!");
+    outputIndex["greeting"] = greeting;
 };
 
 var evaluateRegex = function (msg) {
     "use strict";
     var i;
-    for (i = 0; i < comIndex.length; i += 1) {
-        if (comIndex[i].regex.test(msg)) {
-            return comIndex[i].action;
+    for (i = 0; i < inputIndex.length; i += 1) {
+        if (inputIndex[i].regex.test(msg)) {
+            return inputIndex[i].action;
         }
     }
     return null;
 };
 
-var isGreeting = function (msg) {
+/**
+ * Returns a random integer between min (inclusive) and max (inclusive)
+ * Using Math.round() will give you a non-uniform distribution!
+ */
+var getRandomInt = function (min, max) {
     "use strict";
-    var action = evaluateRegex(msg);
-    if (action === null) {
-        return null;
-    }
-    if (action === "greeting") {
-        return "Hello to you too";
-    }
-    return null;
-}
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
+var choseRandom = function (array) {
+    "use strict";
+    var random = getRandomInt(0, array.length - 1);
+    return array[random];
+};
 
 module.exports = {
     parseMessage : function (msg) {
         "use strict";
-        var greeting = isGreeting(msg);
-        if(greeting !== null){
-            return greeting;
+        var action = evaluateRegex(msg);
+        if (action === null) {
+            return null;
         }
-
-        return null;
+        return choseRandom(outputIndex[action]);
     },
-    initBot : function(){
+    initBot : function () {
+        "use strict";
         initBot();
     }
 };
