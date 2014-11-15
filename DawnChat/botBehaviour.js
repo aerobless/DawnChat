@@ -4,22 +4,26 @@ var outputIndex = {};
 
 var initBot = function () {
     "use strict";
-    inputIndex.push({
-        "regex": /^Hello/im,
-        "action": "greeting"
-    });
+    inputIndex.push({"regex": /^Hello/im, "action": "greeting"});
+    inputIndex.push({"regex": /^Hi/im, "action": "greeting"});
+    inputIndex.push({"regex": /^Hoi/im, "action": "greeting"});
+    inputIndex.push({"regex": /^Ola/im, "action": "greeting"});
+    inputIndex.push({"regex": /^Good day/im, "action": "greeting"});
+    inputIndex.push({"regex": /^Hey/im, "action": "greeting"});
+    inputIndex.push({"regex": /^Hiya/im, "action": "greeting"});
+    inputIndex.push({"regex": /^How are you\?$/im, "action": "status"});
 
-    inputIndex.push({
-        "regex": /^Hi/im,
-        "action": "greeting"
-    });
-
-    var greeting = [];
+    var greeting = []
     greeting.push("Hello there!");
     greeting.push("Hey!");
     greeting.push("Ola!");
     greeting.push("Hiya!");
     outputIndex["greeting"] = greeting;
+
+    var status = [];
+    status.push("I'm fine thanks!");
+    status.push("Good thank you. How are you?");
+    outputIndex["status"] = status;
 };
 
 var evaluateRegex = function (msg) {
