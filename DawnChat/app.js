@@ -26,12 +26,12 @@ io.on('connection', function (socket) {
 
     socket.on('chat message', function (msg) {
         if (msg.length > 0) {
-            console.log('message: ' + msg);
             io.emit('chat message', msg);
-
+            console.log('User: ' + msg);
             var botResponse = bot.parseMessage(msg);
             if (botResponse !== null) {
                 io.emit('chat message', "Bot: " + botResponse);
+                console.log("Bot: " + botResponse);
             }
         }
     });

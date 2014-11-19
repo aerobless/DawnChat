@@ -11,9 +11,14 @@ var initBot = function () {
     inputIndex.push({"regex": /^Good day/im, "action": "greeting"});
     inputIndex.push({"regex": /^Hey/im, "action": "greeting"});
     inputIndex.push({"regex": /^Hiya/im, "action": "greeting"});
+
     inputIndex.push({"regex": /^How are you\?$/im, "action": "status"});
 
-    var greeting = []
+    inputIndex.push({"regex": /^What's the time\?$/im, "action": "time"});
+    inputIndex.push({"regex": /^What time is it\?$/im, "action": "time"});
+    inputIndex.push({"regex": /^Tell me the time/im, "action": "time"});
+
+    var greeting = [];
     greeting.push("Hello there!");
     greeting.push("Hey!");
     greeting.push("Ola!");
@@ -24,6 +29,13 @@ var initBot = function () {
     status.push("I'm fine thanks!");
     status.push("Good thank you. How are you?");
     outputIndex["status"] = status;
+
+    //Function-Response example
+    var time = function () {
+        var currentdate = new Date();
+        return "It is currently " + currentdate.getHours() + ":" + currentdate.getMinutes() + ".";
+    };
+    outputIndex["time"] = time;
 };
 
 var evaluateRegex = function (msg) {
@@ -59,7 +71,15 @@ module.exports = {
         if (action === null) {
             return null;
         }
-        return choseRandom(outputIndex[action]);
+        var possibleResponses = outputIndex[action];
+
+        //Runs a function-response:
+        if (typeof possibleResponses === 'function') {
+            return possibleResponses();
+        }
+
+        //Choses a normal response:
+        return choseRandom(possibleResponses);
     },
     initBot : function () {
         "use strict";
