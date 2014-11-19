@@ -2,10 +2,11 @@ var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var bot = require('./botBehaviour');
+var botProfiles = require('./botProfiles');
 
 var init = function () {
     "use strict";
-    bot.initBot();
+    bot.initBot(botProfiles.tyrion);
 };
 init();
 

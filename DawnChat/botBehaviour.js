@@ -1,9 +1,14 @@
 //Brain:
 var inputIndex = [];
 var outputIndex = {};
+var botProfile;
 
-var initBot = function () {
+var initBot = function (botProfile) {
     "use strict";
+
+    //Import:
+    this.botProfile = botProfile;
+
     inputIndex.push({"regex": /^Hello/im, "action": "greeting"});
     inputIndex.push({"regex": /^Hi/im, "action": "greeting"});
     inputIndex.push({"regex": /^Hoi/im, "action": "greeting"});
@@ -18,6 +23,10 @@ var initBot = function () {
     inputIndex.push({"regex": /^What time is it\?$/im, "action": "time"});
     inputIndex.push({"regex": /^Tell me the time/im, "action": "time"});
 
+    inputIndex.push({"regex": /^What's your name\?$/im, "action": "name"});
+    inputIndex.push({"regex": /^What is your name\?$/im, "action": "name"});
+    inputIndex.push({"regex": /^Identify/im, "action": "name"});
+
     var greeting = [];
     greeting.push("Hello there!");
     greeting.push("Hey!");
@@ -29,6 +38,10 @@ var initBot = function () {
     status.push("I'm fine thanks!");
     status.push("Good thank you. How are you?");
     outputIndex["status"] = status;
+
+    var name = [];
+    name.push("My name is " + botProfile.name + " and I'm " + botProfile.age + " years old.");
+    outputIndex["name"] = name;
 
     //Function-Response example
     var time = function () {
@@ -67,11 +80,12 @@ var choseRandom = function (array) {
 module.exports = {
     parseMessage : function (msg) {
         "use strict";
-        var action = evaluateRegex(msg);
+        var action = evaluateRegex(msg),
+            possibleResponses = outputIndex[action];
+
         if (action === null) {
             return null;
         }
-        var possibleResponses = outputIndex[action];
 
         //Runs a function-response:
         if (typeof possibleResponses === 'function') {
@@ -81,8 +95,5 @@ module.exports = {
         //Choses a normal response:
         return choseRandom(possibleResponses);
     },
-    initBot : function () {
-        "use strict";
-        initBot();
-    }
+    initBot :  initBot
 };
